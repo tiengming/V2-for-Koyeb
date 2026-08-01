@@ -6,6 +6,10 @@ USER root
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh ./
 
+# 新增执行锚点：将由 GitHub Actions 动态更新的版本号文件导入容器。
+# 此操作构成了缓存控制的系统边界。
+COPY version_anchor.txt ./
+
 RUN apt-get update && apt-get install -y wget unzip iproute2 systemctl &&\
     wget -O temp.zip $(wget -qO- "https://api.github.com/repos/v2fly/v2ray-core/releases/latest" | grep -m1 -o "https.*linux-64.*zip") &&\
     unzip temp.zip v2ray geoip.dat geosite.dat &&\

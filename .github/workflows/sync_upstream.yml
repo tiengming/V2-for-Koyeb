@@ -1,0 +1,42 @@
+name: Check Upstream and Trigger Northflank
+
+on:
+  schedule:
+    # 每天 UTC 时间凌晨 2 点执行一次检查
+    - cron: '0 2 * * *'
+  workflow_dispatch: # 允许手动在 Actions 页面点击运行
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout local repository
+        uses: actions/checkout@v3
+
+      - name: Fetch latest upstream version
+        id: get_version
+        run: |
+          # 调用 GitHub API 获取 v2fly 的最新 release tag
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/v2fly/v2ray-core/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+          echo "Latest version is $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check and update version anchor
+        run: |
+          # 如果文件不存在则创建
+          touch version_anchor.txt
+          CURRENT_VERSION=$(cat version_anchor.txt)
+          
+          if [ "$CURRENT_VERSION" != "${{ steps.get_version.outputs.version }}" ]; then
+            echo "Version changed from $CURRENT_VERSION to ${{ steps.get_version.outputs.version }}."
+            echo "${{ steps.get_version.outputs.version }}" > version_anchor.txt
+            
+            # 配置 Git 并在本地提交更新
+            git config --global user.name "GitHub Action Bot"
+            git config --global user.email "action@github.com"
+            git add version_anchor.txt
+            git commit -m "chore: auto-sync upstream release ${{ steps.get_version.outputs.version }}"
+            git push
+          else
+            echo "Already up to date. No commit needed."
+          fi
