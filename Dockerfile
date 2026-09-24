@@ -2,7 +2,7 @@ FROM nginx:latest
 EXPOSE 80
 WORKDIR /app
 USER root
-
+COPY index.html /usr/share/nginx/html/index.html
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh ./
 COPY version_anchor.txt ./

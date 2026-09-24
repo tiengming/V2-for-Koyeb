@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>守护地球 | 绿色行动倡议</title>
+    <style>
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --primary-light: #d1fae5;
+            --accent: #10b981;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --bg-light: #f0fdf4;
+            --bg-card: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero 区域 */
+        .hero {
+            background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: #fafafa;
+            transform: skewY(-2deg);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: #ffffff;
+            color: var(--primary-dark);
+            font-weight: 600;
+            border-radius: 9999px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* 核心内容通用容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.25rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* 环境议题网格 */
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            border-top: 4px solid var(--primary);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* 统计数据 */
+        .stats-section {
+            background-color: var(--bg-light);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* 互动体验：碳足迹简易计算器 */
+        .interactive-section {
+            background: #ffffff;
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #fff;
+        }
+
+        .result-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0.5rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #111827;
+            color: #9ca3af;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span>🌱</span> 守护地球
+            </a>
+            <ul class="nav-links">
+                <li><a href="#issues">环境危机</a></li>
+                <li><a href="#impact">现实数据</a></li>
+                <li><a href="#calculator">碳足迹测算</a></li>
+                <li><a href="#action">绿色行动</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero 视觉区域 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>保护自然，就是保护我们的未来</h1>
+            <p>气候变化与生态退化正在深刻改变地球的容貌。每一次绿色选择，都是在为我们的下一代投票。</p>
+            <a href="#calculator" class="btn">测算你的碳足迹</a>
+        </div>
+    </section>
+
+    <!-- 核心环境议题 -->
+    <section class="container" id="issues">
+        <div class="section-title">
+            <h2>全球面临的重大环境挑战</h2>
+            <p>了解问题的本质，是我们迈向改变的第一步</p>
+        </div>
+        <div class="issues-grid">
+            <div class="card">
+                <div class="card-icon">🌡️</div>
+                <h3>全球气候变暖</h3>
+                <p>工业化以来，全球平均气温已上升约1.1°C。极端天气、海平面上升和干旱风险持续增加。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌊</div>
+                <h3>海洋塑料污染</h3>
+                <p>每年有超过800万吨塑料垃圾流入海洋，严重威胁海洋生物健康并通过食物链反哺人类。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌳</div>
+                <h3>森林退化与砍伐</h3>
+                <p>森林被称为“地球之肺”。全球每分钟损失相当于27个足球场面积的森林，削弱了自然吸碳能力。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🐝</div>
+                <h3>生物多样性丧失</h3>
+                <p>物种灭绝速度比自然背景快上百倍。生态系统失衡将危及人类的食物安全与生活环境。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 现实数据展示 -->
+    <section class="container" id="impact">
+        <div class="stats-section">
+            <div class="section-title" style="margin-bottom: 2rem;">
+                <h2>严峻的数据现状</h2>
+            </div>
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-number">421 ppm</div>
+                    <div class="stat-label">大自然大气二氧化碳浓度峰值</div>
+                </div>
+                <div>
+                    <div class="stat-number">1,000,000</div>
+                    <div class="stat-label">面临灭绝风险的动植物物种数</div>
+                </div>
+                <div>
+                    <div class="stat-number">500 年</div>
+                    <div class="stat-label">普通塑料瓶在自然界降解所需时间</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 互动区：碳足迹简易计算器 -->
+    <section class="container" id="calculator">
+        <div class="section-title">
+            <h2>个人日常碳足迹测算</h2>
+            <p>选择你的生活习惯，估算每年因个人消费产生的二氧化碳排放量</p>
+        </div>
+        <div class="interactive-section">
+            <form id="footprintForm">
+                <div class="form-group">
+                    <label for="transport">1. 主要出行方式：</label>
+                    <select id="transport">
+                        <option value="0.3">公共交通 / 步行 / 自行车</option>
+                        <option value="1.2">混合动力车 / 电动车</option>
+                        <option value="2.5">燃油私家车（日常通勤）</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="diet">2. 饮食结构：</label>
+                    <select id="diet">
+                        <option value="1.0">素食为主</option>
+                        <option value="1.7">均衡饮食（适量肉类）</option>
+                        <option value="2.8">高红肉饮食（牛肉、羊肉居多）</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="plastic">3. 一次性塑料用品使用频率：</label>
+                    <select id="plastic">
+                        <option value="0.1">极少（常备环保袋/自带水杯）</option>
+                        <option value="0.4">偶尔使用</option>
+                        <option value="0.9">频繁使用（外卖/瓶装水居多）</option>
+                    </select>
+                </div>
+                <button type="button" class="btn" onclick="calculateFootprint()" style="width: 100%; background-color: var(--primary); color: white;">计算我的估算排放量</button>
+            </form>
+
+            <div class="result-box" id="resultBox">
+                <h3>你的年度预估碳排放量为：</h3>
+                <div class="result-value" id="resultValue">0 吨 CO₂</div>
+                <p id="resultText" style="color: var(--text-muted);"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 绿色行动指南 -->
+    <section class="container" id="action">
+        <div class="section-title">
+            <h2>你可以采取的绿色行动</h2>
+            <p>从小事做起，持续改善我们的生存环境</p>
+        </div>
+        <div class="issues-grid">
+            <div class="card" style="border-top-color: #10b981;">
+                <h3>🚲 绿色出行</h3>
+                <p>短途优先选择步行或骑行，中长途尽量乘坐公共交通，减少燃油车辆的使用。</p>
+            </div>
+            <div class="card" style="border-top-color: #10b981;">
+                <h3>🛍️ 减少一次性用品</h3>
+                <p>购物自带布袋，随身携带可重复使用的水杯，拒绝过度包装商品。</p>
+            </div>
+            <div class="card" style="border-top-color: #10b981;">
+                <h3>💡 节约能源</h3>
+                <p>随手关灯、拔掉闲置电器插头，使用高效能LED灯泡和节水型器具。</p>
+            </div>
+            <div class="card" style="border-top-color: #10b981;">
+                <h3>🥗 倡议可持续饮食</h3>
+                <p>适度增加植物性食物比例，减少食物浪费，支持本地与有机农产品。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>🌱 守护地球 · 每一个人的参与都有意义</p>
+        <p style="font-size: 0.85rem; opacity: 0.7;">© 2026 环保公益倡议 | 单文件演示页面</p>
+    </footer>
+
+    <script>
+        function calculateFootprint() {
+            const transport = parseFloat(document.getElementById('transport').value);
+            const diet = parseFloat(document.getElementById('diet').value);
+            const plastic = parseFloat(document.getElementById('plastic').value);
+
+            const total = (transport + diet + plastic).toFixed(2);
+
+            const resultBox = document.getElementById('resultBox');
+            const resultValue = document.getElementById('resultValue');
+            const resultText = document.getElementById('resultText');
+
+            resultValue.innerText = total + " 吨 CO₂e / 年";
+
+            if (total < 2.0) {
+                resultText.innerText = "太棒了！你的生活方式相对非常低碳，请继续保持！";
+            } else if (total <= 4.0) {
+                resultText.innerText = "处于平均水平。在出行或减少一次性塑料方面，你还有进一步提升的空间。";
+            } else {
+                resultText.innerText = "碳足迹偏高。尝试选择公共交通或减少红肉摄入，就能显著降低你的环境影响。";
+            }
+
+            resultBox.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
